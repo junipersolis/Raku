@@ -65,7 +65,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000), click **"Click to Enter"**, and the visualizer begins.
 
-> The bundled track list uses the public, royalty-free **SoundHelix** demo songs. Swap them out in `lib/tracks.ts` for your own.
+> The bundled track list uses CC-licensed demo songs (Sevish, Kangaroo MusiQue, CodeSkulptor, Kozco). Audio is routed through a same-origin `/api/track` proxy so the `AnalyserNode` is never blocked by upstream CORS policies. Swap tracks in `lib/tracks.ts` and update the `ALLOWED_HOSTS` set in `app/api/track/route.ts`.
 
 ## Production Build
 

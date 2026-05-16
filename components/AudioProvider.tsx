@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { AudioEngine, type AudioBands } from "@/lib/audio-engine";
-import { TRACKS, type Track } from "@/lib/tracks";
+import { TRACKS, trackUrl, type Track } from "@/lib/tracks";
 import { getState, setState, useVisualizerStore } from "@/lib/visualizer-store";
 
 type AudioContextShape = {
@@ -58,7 +58,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       const s = getState();
       const nextIdx = (s.currentTrackIndex + 1) % TRACKS.length;
       setState({ currentTrackIndex: nextIdx });
-      engine.loadTrack(TRACKS[nextIdx].url);
+      engine.loadTrack(trackUrl(TRACKS[nextIdx]));
       engine.play().then(() => setState({ isPlaying: true }));
     });
     engine.audio.addEventListener("play", () =>
@@ -68,10 +68,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       setState({ isPlaying: false }),
     );
 
-    engine.loadTrack(currentTrack.url);
+    engine.loadTrack(trackUrl(currentTrack));
     await engine.resume();
     setReady(true);
-  }, [currentTrack.url]);
+  }, [currentTrack]);
 
   useEffect(() => {
     return () => {
@@ -113,7 +113,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       }
       const e = engineRef.current;
       if (!e) return;
-      e.loadTrack(TRACKS[clamped].url);
+      e.loadTrack(trackUrl(TRACKS[clamped]));
       await e.play();
     },
     [initialize],
